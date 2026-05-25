@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0B1929">
+<title>SCCA — Galeas Arquitectos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── Reset ─────────────────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+/* ── Variables ─────────────────────────────────────────────────────────── */
+:root{
+  --ink:    #0B1929;
+  --navy:   #112240;
+  --steel:  #1C3A5E;
+  --gold:   #C9A84C;
+  --gold2:  #E8C97A;
+  --cream:  #F5F0E8;
+  --mist:   rgba(255,255,255,0.06);
+  --border: rgba(201,168,76,0.2);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+}
+
+/* ── Base ──────────────────────────────────────────────────────────────── */
+html{ height:100%; }
+body{
+  min-height:100vh;
+  background-color: var(--ink);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(28,58,94,0.9) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 90% 80%, rgba(201,168,76,0.07) 0%, transparent 60%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 80px,
+      rgba(255,255,255,0.012) 80px,
+      rgba(255,255,255,0.012) 81px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 80px,
+      rgba(255,255,255,0.012) 80px,
+      rgba(255,255,255,0.012) 81px
+    );
+  font-family: var(--font-body);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px 60px;
+  overflow-x: hidden;
+}
+
+/* ── Decoración de fondo ───────────────────────────────────────────────── */
+.bg-orb{
+  position:fixed;pointer-events:none;border-radius:50%;filter:blur(90px);opacity:.18;
+}
+.bg-orb-1{
+  width:500px;height:500px;
+  background:radial-gradient(circle,#1C3A5E,transparent);
+  top:-100px;left:-150px;
+}
+.bg-orb-2{
+  width:400px;height:400px;
+  background:radial-gradient(circle,#C9A84C,transparent);
+  bottom:-80px;right:-100px;opacity:.08;
+}
+
+/* ── Wrapper ───────────────────────────────────────────────────────────── */
+.wrapper{
+  position:relative;z-index:1;
+  width:100%;max-width:500px;
+  display:flex;flex-direction:column;align-items:center;
+}
+
+/* ── Logo ──────────────────────────────────────────────────────────────── */
+.logo-wrap{
+  background:#fff;
+  border-radius:14px;
+  padding:12px 20px;
+  margin-bottom:28px;
+  box-shadow:
+    0 0 0 1px rgba(201,168,76,0.3),
+    0 8px 32px rgba(0,0,0,0.4),
+    0 2px 8px rgba(201,168,76,0.15);
+  animation: fadeDown .6s ease both;
+}
+.logo-wrap img{
+  max-height:52px;max-width:180px;display:block;
+}
+
+/* ── Cabecera ──────────────────────────────────────────────────────────── */
+.eyebrow{
+  font-family:var(--font-body);
+  font-size:10px;font-weight:600;letter-spacing:4px;
+  color:var(--gold);text-transform:uppercase;
+  margin-bottom:8px;
+  animation:fadeDown .6s .1s ease both;
+}
+.titulo{
+  font-family:var(--font-display);
+  font-size:clamp(32px,8vw,52px);
+  font-weight:700;
+  color:#fff;
+  text-align:center;
+  line-height:1.1;
+  margin-bottom:6px;
+  animation:fadeDown .6s .15s ease both;
+}
+.titulo span{color:var(--gold);}
+.subtitulo{
+  font-size:13px;font-weight:300;
+  color:rgba(255,255,255,0.45);
+  text-align:center;
+  letter-spacing:0.3px;
+  margin-bottom:44px;
+  animation:fadeDown .6s .2s ease both;
+}
+
+/* ── Divisor dorado ────────────────────────────────────────────────────── */
+.divisor{
+  width:48px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  margin:0 auto 40px;
+  animation:fadeIn .8s .3s ease both;
+}
+
+/* ── Cards de módulos ──────────────────────────────────────────────────── */
+.modulos{
+  width:100%;
+  display:flex;flex-direction:column;gap:12px;
+  animation:fadeUp .7s .35s ease both;
+}
+
+.modulo{
+  position:relative;
+  background:var(--mist);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:22px 24px;
+  cursor:pointer;
+  text-decoration:none;
+  display:flex;align-items:center;gap:20px;
+  transition:all .25s cubic-bezier(.4,0,.2,1);
+  overflow:hidden;
+  backdrop-filter:blur(12px);
+}
+
+/* Línea lateral animada */
+.modulo::before{
+  content:"";
+  position:absolute;left:0;top:12px;bottom:12px;
+  width:3px;border-radius:2px;
+  background:linear-gradient(180deg,transparent,var(--gold),transparent);
+  opacity:0;
+  transition:opacity .25s;
+}
+.modulo:hover::before{opacity:1;}
+
+/* Brillo en hover */
+.modulo::after{
+  content:"";
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(201,168,76,0.06),transparent 60%);
+  opacity:0;transition:opacity .25s;
+  pointer-events:none;
+}
+.modulo:hover::after{opacity:1;}
+.modulo:hover{
+  background:rgba(255,255,255,0.09);
+  border-color:rgba(201,168,76,0.5);
+  transform:translateX(4px);
+  box-shadow:0 8px 32px rgba(0,0,0,0.3), -4px 0 20px rgba(201,168,76,0.08);
+}
+.modulo:active{transform:translateX(2px) scale(.99);}
+
+/* Ícono */
+.mod-icon{
+  width:50px;height:50px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;flex-shrink:0;
+  border:1px solid rgba(255,255,255,0.08);
+  transition:transform .25s;
+}
+.modulo:hover .mod-icon{transform:scale(1.08);}
+.m1 .mod-icon{background:rgba(26,82,118,0.35);}
+.m2 .mod-icon{background:rgba(139,0,0,0.35);}
+.m3 .mod-icon{background:rgba(30,107,58,0.35);}
+
+/* Texto */
+.mod-info{flex:1;min-width:0;}
+.mod-titulo{
+  font-family:var(--font-display);
+  font-size:18px;font-weight:600;
+  color:#fff;margin-bottom:3px;
+  line-height:1.2;
+}
+.mod-desc{
+  font-size:12px;font-weight:300;
+  color:rgba(255,255,255,0.45);
+  line-height:1.4;
+}
+
+/* Flecha */
+.mod-arrow{
+  font-size:20px;color:var(--gold);
+  opacity:0.5;flex-shrink:0;
+  transition:all .25s;
+}
+.modulo:hover .mod-arrow{opacity:1;transform:translateX(3px);}
+
+/* ── Badge de número ───────────────────────────────────────────────────── */
+.mod-num{
+  position:absolute;top:12px;right:14px;
+  font-size:9px;font-weight:600;letter-spacing:1px;
+  color:var(--gold);opacity:0.4;
+  font-family:var(--font-body);
+}
+
+/* ── Footer ────────────────────────────────────────────────────────────── */
+.footer{
+  margin-top:44px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  animation:fadeIn 1s .6s ease both;
+}
+.footer-line{
+  width:1px;height:32px;
+  background:linear-gradient(180deg,var(--gold),transparent);
+  opacity:0.3;
+}
+.footer-txt{
+  font-size:10px;font-weight:400;letter-spacing:2px;
+  color:rgba(255,255,255,0.2);text-transform:uppercase;
+}
+
+/* ── Loading overlay ───────────────────────────────────────────────────── */
+.overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(11,25,41,0.92);
+  backdrop-filter:blur(8px);
+  z-index:200;flex-direction:column;
+  align-items:center;justify-content:center;gap:20px;
+}
+.overlay.show{display:flex;}
+.spin{
+  width:40px;height:40px;border-radius:50%;
+  border:3px solid rgba(201,168,76,0.2);
+  border-top-color:var(--gold);
+  animation:spin .8s linear infinite;
+}
+.overlay-txt{
+  font-family:var(--font-display);
+  font-size:18px;color:rgba(255,255,255,0.7);
+  letter-spacing:0.5px;
+}
+
+/* ── Animaciones ───────────────────────────────────────────────────────── */
+@keyframes fadeDown{
+  from{opacity:0;transform:translateY(-16px);}
+  to{opacity:1;transform:translateY(0);}
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+@keyframes fadeIn{
+  from{opacity:0;}to{opacity:1;}
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── Responsive ────────────────────────────────────────────────────────── */
+@media(max-width:400px){
+  .modulo{padding:18px 16px;gap:14px;}
+  .mod-icon{width:44px;height:44px;font-size:20px;}
+  .mod-titulo{font-size:16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- Orbs de fondo -->
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+
+<!-- Loading overlay -->
+<div class="overlay" id="overlay">
+  <div class="spin"></div>
+  <div class="overlay-txt" id="overlayTxt">Abriendo módulo...</div>
+</div>
+
+<div class="wrapper">
+
+  <!-- Logo -->
+  <div class="logo-wrap">
+    <img src="data:image/jpeg;base64,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" alt="Galeas Arquitectos">
+  </div>
+
+  <!-- Cabecera -->
+  <div class="eyebrow">Sistema de Gestión</div>
+  <h1 class="titulo">S<span>C</span>CA</h1>
+  <p class="subtitulo">Sistema de Control de Calidad Autónomo<br>Galeas Arquitectos</p>
+  <div class="divisor"></div>
+
+  <!-- Módulos -->
+  <div class="modulos">
+
+    <a class="modulo m1"
+      href="https://script.google.com/a/macros/galeasarquitectos.com/s/AKfycbxD9c-W0MlGnWh9fQXn0_uFaqNUgjIFlCY_uqXXfhDACZIRBEqM_d0Sv55zchUCzKYUnA/exec"
+      target="_blank" onclick="mostrarLoading('Abriendo Checklist de Calidad...')">
+      <div class="mod-num">01</div>
+      <div class="mod-icon">✅</div>
+      <div class="mod-info">
+        <div class="mod-titulo">Checklist de Calidad</div>
+        <div class="mod-desc">Control de ítems por etapa constructiva con evidencia fotográfica</div>
+      </div>
+      <div class="mod-arrow">→</div>
+    </a>
+
+    <a class="modulo m2"
+      href="https://script.google.com/a/macros/galeasarquitectos.com/s/AKfycbzdx4i39akB8QGApnIn4UeXpK4FcDJuMm36AKiWCr8_d2zyebjf0x8oxcxr9E4f7biNBA/exec"
+      target="_blank" onclick="mostrarLoading('Abriendo No Conformidades...')">
+      <div class="mod-num">02</div>
+      <div class="mod-icon">🚨</div>
+      <div class="mod-info">
+        <div class="mod-titulo">No Conformidades</div>
+        <div class="mod-desc">Registro, seguimiento y cierre con dashboard y % cumplimiento por proyecto</div>
+      </div>
+      <div class="mod-arrow">→</div>
+    </a>
+
+    <a class="modulo m3"
+      href="https://script.google.com/a/macros/galeasarquitectos.com/s/AKfycbxdtgI_wft95wk4io-S8csI2UAGz9HJvRqC0MPqi7g-L2T4BLCKGZr_LIP5OFs_EeEKyA/exec"
+      target="_blank" onclick="mostrarLoading('Abriendo Visitas a Campo...')">
+      <div class="mod-num">03</div>
+      <div class="mod-icon">🏗️</div>
+      <div class="mod-info">
+        <div class="mod-titulo">Visitas a Campo</div>
+        <div class="mod-desc">Informe del Director con evaluación por sección, compromisos y evidencia fotográfica</div>
+      </div>
+      <div class="mod-arrow">→</div>
+    </a>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-line"></div>
+    <div class="footer-txt">Galeas Arquitectos · 2025</div>
+  </div>
+
+</div>
+
+<script>
+function mostrarLoading(txt) {
+  document.getElementById("overlayTxt").textContent = txt;
+  document.getElementById("overlay").classList.add("show");
+  setTimeout(() => document.getElementById("overlay").classList.remove("show"), 1800);
+}
+</script>
+</body>
+</html>
